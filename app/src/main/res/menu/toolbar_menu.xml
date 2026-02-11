@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Refresh"
+        android:id="@+id/getRates"
+        android:onClick="refreshBtn"
+        />
+    <item android:title="Help"
+        android:id="@+id/help"
+        android:onClick="helpBtn"/>
+    <item android:title="Exit"
+        android:id="@+id/exit"
+        android:onClick="exitBtn"/>
+</menu>

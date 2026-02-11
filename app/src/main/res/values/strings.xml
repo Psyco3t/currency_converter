@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CurrencyConverter</string>
+    <string name="convert_from">Enter conversion amount</string>
+    <string name="switchBtnText">Switch</string>
+    <string name="description">Currency converter is supposed to be an alternative
+ for users who lack internet connection simply hit the refresh button in the toolbar to get the
+ latest rates</string>
+</resources>
