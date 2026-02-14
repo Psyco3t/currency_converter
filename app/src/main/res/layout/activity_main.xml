@@ -63,16 +63,17 @@
                     android:id="@+id/editTextNumberDecimal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/editTextBackgroundNight"
                     android:contentDescription="@string/convert_from"
                     android:ems="10"
                     android:inputType="numberDecimal"
                     android:minWidth="48dp"
                     android:minHeight="48dp"
-                    android:padding="5dp"
-                    android:layout_margin="5dp"/>
+                    android:padding="5dp" />
 
                 <Spinner
                     android:id="@+id/convertFrom"
@@ -116,6 +117,7 @@
                     android:enabled="false"
                     android:inputType="numberDecimal"
                     android:minWidth="48dp"
+                    android:backgroundTint="@color/editTextBackgroundNight"
                     android:minHeight="48dp"
                     android:layout_margin="5dp"/>
 
