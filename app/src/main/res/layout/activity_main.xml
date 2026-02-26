@@ -141,6 +141,25 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/useFavoriteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="Use last favorite"
+                android:onClick="useFavoriteBtn"/>
+
+            <Button
+                android:id="@+id/favoriteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1"
+                android:paddingTop="6dp"
+                android:onClick="favoriteBtn"
+                android:text="Favorite" />
         </LinearLayout>
 
     </LinearLayout>

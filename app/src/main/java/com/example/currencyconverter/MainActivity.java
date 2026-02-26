@@ -1,6 +1,8 @@
 package com.example.currencyconverter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +24,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +45,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     Requests requests = new Requests(this);
+    SharedPreferences prefs;
     HashMap<String, Double> conversionHash;
     double currentRateFrom;
     double currentRateTo;
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        prefs = getPreferences(Context.MODE_PRIVATE);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
                 (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -80,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        //List<String> namesList = getCurrencies(rates);
 
         convertFrom = (Spinner) findViewById(R.id.convertFrom);
         convertFrom.setOnItemSelectedListener(this);
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         editTextFrom = (EditText) findViewById(R.id.editTextNumberDecimal);
         editTextTo = (EditText) findViewById(R.id.editTextNumberDecimal2);
+
 
         editTextFrom.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,6 +139,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         requests.AllRates(this);
     }
 
+    public void favoriteBtn(View view) {
+        String textFrom = convertFrom.getSelectedItem().toString();
+        String textTo = convertTo.getSelectedItem().toString();
+        String title = textFrom+ "-" + textTo;
+        Gson gson = new Gson();
+        favoriteModel favorite1 = new favoriteModel(title,
+                positionTo,positionFrom);
+        String objectString = gson.toJson(favorite1);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("favoriteItem1",objectString);
+        editor.apply();
+    }
+    public void useFavoriteBtn(View view) {
+        String jsonString = prefs.getString("favoriteItem1","");
+        try {
+            JSONObject favoriteItem = new JSONObject(jsonString);
+            convertFrom.setSelection(favoriteItem.getInt("positionFrom"));
+            convertTo.setSelection(favoriteItem.getInt("positionTo"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void switchBtn(View view) {
         String storage = editTextFrom.getText().toString();
 
@@ -165,18 +194,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return conversionHash;
     }
-
-    /*public List<String> getCurrencies(JSONObject object)
-    {
-        Iterator<String> keys = object.keys();
-        List<String> keyList = new ArrayList<>();
-
-        while(keys.hasNext()) {
-            String key = keys.next();
-            keyList.add(key);
-        }
-        return keyList;
-    }*/
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
         if(parent.getId()==R.id.convertFrom)
         {
@@ -260,4 +277,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return currencyNames;
     }
+
 }
