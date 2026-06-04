@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void exitBtn(MenuItem item) throws JSONException {
-        System.exit(0);
+        finishAffinity();
     }
 
     public void helpBtn(MenuItem item) {

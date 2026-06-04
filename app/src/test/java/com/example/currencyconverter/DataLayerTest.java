@@ -36,13 +36,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-/*public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
-}*/
-
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner.class)
 public class DataLayerTest{
@@ -62,9 +55,12 @@ public class DataLayerTest{
     public void RequestsTest(){
         //note to self: KILL ME NOW!!
         Requests requests = mock(Requests.class);
+        boolean result;
         try {
             requests.GetLatestRate(url);
             verify(requests, atLeastOnce()).GetLatestRate(url);
+            result = requests.GetLatestRate(url);
+            assertFalse(result);
         } catch (IOException e) {
             fail();
         }

@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.example.currencyconverter.Requests;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SplashScreen extends AppCompatActivity {
     String apiKey = BuildConfig.exchangeRate_API_key;
@@ -34,19 +37,31 @@ public class SplashScreen extends AppCompatActivity {
         });
         Handler handler = new Handler();
         Requests requests = new Requests(this);
-        try {
-            requests.GetLatestRate(
-                    "https://v6.exchangerate-api.com/v6/" +
-                            ""+apiKey +"/latest/EUR");
-        } catch (IOException e) {
-            System.out.println("couldnt retrieve rates");
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreen.this,MainActivity.class));
-                finish();
+                ExecuteAsyncTask(requests,executorService);
             }
-        },3000);
+        },1000);
+    }
+
+    private void ExecuteAsyncTask(Requests requests, ExecutorService executorService)
+    {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    requests.GetLatestRate(
+                            "https://v6.exchangerate-api.com/v6/" +
+                                    ""+apiKey +"/latest/EUR");
+                } catch (IOException e) {
+                    System.out.println("couldnt retrieve rates");
+                    executorService.shutdown();
+                }
+                startActivity(new Intent(SplashScreen.this,
+                        MainActivity.class));
+            }
+        });
     }
 }

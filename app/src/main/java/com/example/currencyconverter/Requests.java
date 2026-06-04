@@ -29,12 +29,14 @@ public class Requests {
     OkHttpClient client = new OkHttpClient();
     private  final Context context;
     String responseBody;
+    private Boolean success;
 
     public Requests(Context context) {
         this.context = context;
     }
 
-    public void GetLatestRate(String url) throws IOException{
+    public boolean GetLatestRate(String url) throws IOException{
+        success = false; //this is bad, but its here for a reason
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -51,6 +53,7 @@ public class Requests {
                         public void run() {
                             Toast.makeText(context, "Failed refresh",
                                     Toast.LENGTH_SHORT).show();
+                            success = false;
                         }
                     });
                 }
@@ -69,6 +72,7 @@ public class Requests {
                                 public void run() {
                                     Toast.makeText(context, "Successful refresh",
                                             Toast.LENGTH_SHORT).show();
+                                    success = true;
                                 }
                             });
                         }
@@ -79,14 +83,17 @@ public class Requests {
                         System.out.println("unknown error");
                         Toast.makeText(context,"Refresh error",
                                 Toast.LENGTH_SHORT).show();
+                        success = false;
                     }
                 } else {
                     System.err.println("responseBody error" + response.code());
                     Toast.makeText(context,"Refresh error code " +
                             response.code(),Toast.LENGTH_SHORT).show();
+                    success = false;
                 }
             }
         });
+        return success;
     }
 
     private boolean WriteRates(String contents, Context context)
